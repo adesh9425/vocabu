@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vocabulary Quiz</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Custom CSS styles */
+    body {
+      background-color: #6a57a3; /* Purple color for the main page */
+    }
+    .container {
+      margin-top: 50px;
+      background-color: #fff; /* White container background */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      position: relative; /* Add position relative */
+    }
+    .question {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      background-color: #3d86e8; /* Blue color for the question background */
+      padding: 10px;
+      border-radius: 5px;
+      color: #000; /* Black color for the question text */
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      background-color: #ebffed; /* Light green color for options */
+    }
+    .option:hover {
+      background-color: #d6fcd6; /* Slightly darker green color on hover */
+    }
+    .option input[type="radio"] {
+      margin-right: 10px;
+    }
+    .option.selected {
+      background-color: #c8f7c5; /* Light green color for selected option */
+    }
+    #answer {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      font-weight: bold;
+      background-color: #ffd769; /* Yellow color for answer display */
+      color: #000; /* Black text color for answer display */
+    }
+    #next {
+      margin-top: 20px;
+    }
+    #submit-image {
+      margin-top: 10px;
+    }
+    .alert {
+      margin-top: 20px;
+      padding: 10px;
+      font-weight: bold;
+    }
+    .alert-success {
+      background-color: #a0f4a0; /* Darker green color for correct answer */
+    }
+    .alert-danger {
+      background-color: #ffbdbd; /* Red color for incorrect answer */
+    }
+    .selected-image-container {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .selected-image {
+      max-width: 100px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="question">{{ question }}</h2>
+
+    <div id="options">
+      <form action="{% url 'vocab_mcq' %}" method="POST" class="option-form">
+        {% csrf_token %}
+        {% for option in options %}
+        <label class="option {% if option.value == selected_option %}selected{% endif %}">
+          <input type="radio" name="selected_option" value="{{ option.value }}" onclick="showAnswer(this)">
+          <span>{{ option.value }}</span>
+        </label>
+        {% endfor %}
+        <label for="custom_image">Submit Custom Image:</label>
+        <input type="text" name="custom_image" id="custom_image">
+        <button type="submit" id="next" class="btn btn-primary">Next</button>
+        <input type="hidden" name="answer" value="{{ correct_answer }}">
+      </form>
+      {% if selected_option and image_url %}
+
+
+<div class="selected-image-container">
+  {% if image_url %}
+  <img src="{{ image_url }}" alt="Selected Image" class="selected-image" style="position: absolute; bottom: 20px; right: 20px; max-width: 100px;">
+  {% endif %}
+</div>
+
+
+
+      {% endif %}
+      <button type="button" id="submit-image" class="btn btn-secondary" onclick="submitCustomImage()">Submit Image</button>
+    </div>
+
+    {% if message %}
+    <div id="answer" class="alert {% if is_correct %}alert-success{% else %}alert-danger{% endif %}">
+      {{ message }} Correct answer: {{ correct_answer }}
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    function showAnswer(selectedOption) {
+      var answerDiv = document.getElementById('answer');
+      answerDiv.style.display = "block";
+    }
+function showAnswer(selectedOption) {
+  var answerDiv = document.getElementById('answer');
+  answerDiv.style.display = "block";
+
+  var imageUrl = '';
+  if (selectedOption.value == 'custom') {
+    imageUrl = document.getElementById('custom_image').value;
+  } else {
+    imageUrl = selectedOption.dataset.imageUrl;
+  }
+
+  document.getElementById('selected-image-container').innerHTML = '<img src="' + imageUrl + '" alt="Selected Image" class="selected-image" style="position: absolute; bottom: 20px; right: 20px; max-width: 100px;">';
+}
+
+    function submitCustomImage() {
+      var customImageInput = document.getElementById('custom_image');
+      var customImage = customImageInput.value.trim();
+      if (customImage !== '') {
+        // Set the value of the hidden input field
+        customImageInput.setAttribute('value', customImage);
+        // Submit the form
+        var form = document.getElementsByClassName('option-form')[0];
+        form.submit();
+      }
+    }
+  </script>
+</body>
+</html>
