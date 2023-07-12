@@ -5,54 +5,34 @@ import random
 from django.shortcuts import render
 from django.views.decorators.cache import cache_control
 from django.contrib.auth.decorators import login_required
-import urllib, base64
-from rest_framework import viewsets
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404
 import requests
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
+
 import json
-from psycopg2.extras import DateTimeTZRange
-import datetime
-from django.contrib import messages
-from time import strptime
-import os
-import glob
-import time
-import collections
-import subprocess
 from django.http import HttpResponse
 from io import BytesIO
 from django.contrib import auth
 from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
-from .models import *
 
 from django.urls import reverse
 import io
-import matplotlib.dates as mdates
+
 from google.oauth2.credentials import Credentials
-import numpy as np
 from django.http import HttpResponse
 from django.shortcuts import render
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
-import seaborn as sns
 from django.http import HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
-import datetime
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-# Create your views here.
+
+
 import pandas as pd
 import random
 from django.shortcuts import render
