@@ -25,10 +25,4 @@ VocabU is a Django-based web portal designed to make vocabulary learning more en
 
 ---
 
-## 🧪 Installation & Setup
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/vocab-u.git
-cd vocab-u
